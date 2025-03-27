@@ -189,8 +189,8 @@ function OrderDetail() {
                                         <tr>
                                             <th className="px-6 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Sản phẩm</th>
                                             <th className="px-6 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Thuộc tính</th>
-                                            <th className="px-6 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Đơn giá</th>
                                             <th className="px-6 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Số lượng</th>
+                                            <th className="px-6 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Đơn giá</th>
                                             <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">Thành tiền</th>
                                         </tr>
                                     </thead>
@@ -215,16 +215,22 @@ function OrderDetail() {
                                                     ))}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {FormatCurrency(item.price)}
+                                                    {item.quantity}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {item.quantity}
+                                                    {FormatCurrency(item.price)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-red-500">
                                                     {FormatCurrency(item.price * item.quantity)}
                                                 </td>
                                             </tr>
                                         ))}
+                                        <tr className="bg-gray-50">
+                                            <td colSpan="4" className="px-6 py-4 text-right font-bold">Tổng cộng:</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-500">
+                                                {FormatCurrency(order.totalPrice)}
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -14,7 +14,9 @@ function OrderManagement() {
     useEffect(() => {
         (async () => {
             const response = await getAllOrders();
-            setOrders(response.data.data);
+            // Sort orders by id in descending order
+            const sortedOrders = response.data.data.sort((a, b) => b.id - a.id);
+            setOrders(sortedOrders);
         })();
     }, []);
 

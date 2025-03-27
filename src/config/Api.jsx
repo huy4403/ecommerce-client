@@ -11,19 +11,35 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(request => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        request.headers['Authorization'] = `Bearer ${token}`;
+    if (!request.url.includes('auth/signup') &&
+        !request.url.includes('auth/signing') &&
+        !request.url.includes('auth/signing-with-otp') &&
+        !request.url.includes('auth/sent-signing-otp') &&
+        !request.url.includes('auth/sent-reset-password-otp') &&
+        !request.url.includes('auth/reset-password-with-otp')) {
+        const token = localStorage.getItem('token');
+        if (token) {
+            request.headers['Authorization'] = `Bearer ${token}`;
+        }
     }
     return request;
 }, error => {
     return Promise.reject(error);
 });
 
+
 instance.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        if (error.response &&
+            (error.response.status === 401 || error.response.status === 403) &&
+            !error.config.url.includes('auth/signup') &&
+            !error.config.url.includes('auth/signing') &&
+            !error.config.url.includes('auth/signing-with-otp') &&
+            !error.config.url.includes('auth/sent-signing-otp') &&
+            !error.config.url.includes('auth/sent-reset-password-otp') &&
+            !error.config.url.includes('auth/reset-password-with-otp')) {
+
             let message = "Vui lòng đăng nhập để thực hiện thao tác này!";
             if (error.response.data && error.response.data.error === "Token is expired!") {
                 message = "Phiên đăng nhập đã hết hạn!";
