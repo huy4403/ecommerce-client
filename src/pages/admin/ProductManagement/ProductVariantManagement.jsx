@@ -142,23 +142,23 @@ function ProductVariantManagement({ id, attributes }) {
             });
     }
 
-    const handleUpdateQuantity = (variantId) => {
+    const handleUpdateQuantity = (variantId, isIncrease) => {
         const newQuantity = editingQuantity[variantId];
         if (!newQuantity || newQuantity <= 0) {
             Toast.error("Số lượng phải lớn hơn 0");
             return;
         }
 
-        ConfirmationDialog("Bạn có chắc chắn muốn cập nhật số lượng biến thể này?")
+        const quantityToUpdate = isIncrease ? newQuantity : -newQuantity;
+
+        ConfirmationDialog(`Bạn có chắc chắn muốn ${isIncrease ? 'tăng' : 'giảm'} ${Math.abs(newQuantity)} sản phẩm?`)
             .then(async (result) => {
                 if (result) {
                     try {
-                        await updateQuantityVariant(variantId, newQuantity);
-                        Toast.success("Cập nhật số lượng biến thể thành công");
-                        // Refresh variants after updating
+                        await updateQuantityVariant(variantId, quantityToUpdate);
+                        Toast.success(`${isIncrease ? 'Tăng' : 'Giảm'} số lượng biến thể thành công`);
                         const resVariant = await getVariants(id);
                         setVariants(resVariant.data.data || []);
-                        // Clear editing state
                         setEditingQuantity(prev => {
                             const updated = { ...prev };
                             delete updated[variantId];
@@ -166,7 +166,7 @@ function ProductVariantManagement({ id, attributes }) {
                         });
                     } catch (err) {
                         console.log(err);
-                        Toast.error("Lỗi khi cập nhật số lượng biến thể");
+                        Toast.error(`Lỗi khi ${isIncrease ? 'tăng' : 'giảm'} số lượng biến thể`);
                     }
                 }
             });
@@ -324,23 +324,36 @@ function ProductVariantManagement({ id, attributes }) {
                                     <span className="text-sm font-medium text-gray-700">Số lượng tồn kho:</span>
                                     {editingQuantity[variant.id] !== undefined ? (
                                         <div className="flex items-center mt-1">
-                                            <input
-                                                type="number"
-                                                className="rounded-lg border-gray-300 w-24 px-2 py-1
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                                                transition-all duration-200 border-2"
-                                                value={editingQuantity[variant.id]}
-                                                onChange={(e) => setEditingQuantity({
-                                                    ...editingQuantity,
-                                                    [variant.id]: parseInt(e.target.value)
-                                                })}
-                                            />
+                                            <div className="flex items-center">
+                                                <span className="text-xl text-gray-600 mr-2">{variant.quantity}</span>
+                                                <input
+                                                    type="number"
+                                                    className="rounded-lg border-gray-300 w-24 px-2 py-1
+                                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                                    transition-all duration-200 border-2"
+                                                    placeholder="Nhập số lượng"
+                                                    value={editingQuantity[variant.id]}
+                                                    onChange={(e) => setEditingQuantity({
+                                                        ...editingQuantity,
+                                                        [variant.id]: parseInt(e.target.value)
+                                                    })}
+                                                />
+                                            </div>
+
                                             <button
                                                 type="button"
-                                                onClick={() => handleUpdateQuantity(variant.id)}
+                                                onClick={() => handleUpdateQuantity(variant.id, false)}
+                                                className="ml-2 px-2 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-700"
+                                            >
+                                                giảm
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                onClick={() => handleUpdateQuantity(variant.id, true)}
                                                 className="ml-2 px-2 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700"
                                             >
-                                                Lưu
+                                                Tăng
                                             </button>
                                             <button
                                                 type="button"
