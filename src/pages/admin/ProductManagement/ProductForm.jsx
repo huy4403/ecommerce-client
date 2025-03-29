@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { getAllCategory } from "~/services/category/category-service";
 import { createProduct } from "~/services/admin/product-service";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
@@ -335,7 +335,6 @@ function ProductForm() {
                         </div>
                     </form>
                 </div>
-                <ToastContainer />
             </div>
         </>
     );

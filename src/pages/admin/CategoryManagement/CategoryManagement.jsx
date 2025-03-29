@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { deleteCategory } from "~/services/admin/category-service";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 function CategoryManagement() {
 
@@ -97,7 +97,6 @@ function CategoryManagement() {
                     </div>
                 </div>
             </div>
-            <ToastContainer />
         </>
     )
 }

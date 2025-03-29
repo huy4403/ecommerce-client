@@ -4,6 +4,9 @@ import CustomerRoutes from '~/routes/CustomerRoutes'
 import AdminRoutes from '~/routes/AdminRoutes'
 import { DefaultLayout } from '~/components/Layouts'
 import { Fragment } from 'react'
+import ScrollTop from '~/components/ui/ScrollTop'
+import Messenger from '~/components/ui/Messenger';
+import { ToastContainer } from '~/components/ui/Toast';
 
 function App() {
 
@@ -29,13 +32,16 @@ function App() {
               element={
                 <Layout>
                   <Page />
+                  <Messenger />
+                  <ScrollTop />
+                  <ToastContainer />
                 </Layout>
               }
             />
           );
         })}
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   )
 }
 

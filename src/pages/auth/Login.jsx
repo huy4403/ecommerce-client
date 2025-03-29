@@ -1,15 +1,18 @@
 import { loginWithPassword } from '~/services/auth/login-service'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
+import { Context } from "~/ContextProvider";
 
 const Login = () => {
     const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+
+    const context = useContext(Context);
 
     useEffect(() => {
         localStorage.clear();
@@ -32,8 +35,10 @@ const Login = () => {
 
                 if (res.data.data.role === "ADMIN") {
                     navigate('/admin')
+                    context.setIsLogin(true);
                 } else if (res.data.data.role === "USER") {
                     navigate('/')
+                    context.setIsLogin(true);
                 }
             })
             .catch(err => {
@@ -137,7 +142,6 @@ const Login = () => {
                     </p>
                 </div>
             </div>
-            <ToastContainer />
         </>
     )
 }

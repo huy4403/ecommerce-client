@@ -3,13 +3,14 @@ import Footer from '~/components/Layouts/components/Footer';
 
 function DefaultLayout({ children }) {
     return (
-        <>
-            <Header />
-            <div className="content">
-                {children}
+        <div>
+            <div className="container">
+                <div className="content">
+                    {children}
+                </div>
             </div>
             <Footer />
-        </>
+        </div>
     )
 }
 

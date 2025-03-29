@@ -7,7 +7,6 @@ import Dashboard from "~/pages/admin/dashboard/Dashboard";
 import OrderManagement from "~/pages/admin/OrderManagement/OrderManagement";
 import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import ScrollTop from "~/components/ui/ScrollTop";
 
 function Index() {
 
@@ -73,7 +72,6 @@ function Index() {
                     {activeSection === "orders" && <OrderManagement />}
                 </div>
             </div>
-            <ScrollTop />
         </>
     );
 };

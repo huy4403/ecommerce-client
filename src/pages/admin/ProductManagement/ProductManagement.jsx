@@ -5,7 +5,7 @@ import "rc-slider/assets/index.css";
 import debounce from "lodash/debounce";
 import { productManagementService, inactiveProduct, activeProduct } from "~/services/admin/product-service";
 import { getAllCategoryAdmin } from "~/services/category/category-service";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import { Link } from "react-router-dom";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import FormatCurrency from "~/components/utils/formatCurrency";
@@ -291,7 +291,6 @@ const ProductManagement = () => {
                     </>
                 )}
             </div>
-            <ToastContainer />
         </>
     );
 };

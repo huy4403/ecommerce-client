@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllUser, lockAccount, unlockAccount } from "~/services/admin/user-service";
-import { FaSort } from "react-icons/fa";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 
 function UserManagement() {
@@ -136,7 +135,6 @@ function UserManagement() {
                     </table>
                 </div>
             </div>
-            <ToastContainer />
         </>
     )
 }

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { getAllCategory } from "~/services/category/category-service";
 import { getProductById, updateProduct, activeProduct, inactiveProduct } from "~/services/admin/product-service";
 import { useParams, useNavigate } from "react-router";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import AttributeManagement from "~/pages/admin/ProductManagement/AttributeManagement";
 import ProductVariantManagement from "~/pages/admin/ProductManagement/ProductVariantManagement";
@@ -419,7 +419,6 @@ function UpdateProductForm() {
                     />
 
                 </div>
-                <ToastContainer />
             </div >
         </>
     );

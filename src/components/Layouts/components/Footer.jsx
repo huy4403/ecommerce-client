@@ -7,7 +7,49 @@ import googlePlayLogo from '~/assets/img/google_play.png';
 function Footer() {
     return (
         <footer className="bg-pink-100 text-gray-700 text-sm">
-            {/* Phần trên */}
+
+            <section className="py-16 bg-white">
+                <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div className="text-center">
+                            <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-lg mb-2">Sản Phẩm Chính Hãng</h3>
+                            <p className="text-gray-600">Cam kết 100% sản phẩm chính hãng, nguồn gốc rõ ràng</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-lg mb-2">Giao Hàng Nhanh Chóng</h3>
+                            <p className="text-gray-600">Giao hàng toàn quốc từ 1-7 ngày làm việc</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-lg mb-2">Bảo Hành Dài Hạn</h3>
+                            <p className="text-gray-600">Chính sách bảo hành lên đến 24 tháng</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-bold text-lg mb-2">Thanh Toán An Toàn</h3>
+                            <p className="text-gray-600">Nhiều phương thức thanh toán an toàn, bảo mật</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <div className="container mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-8">
                 {/* Cột 1 */}
                 <div>
@@ -44,7 +86,7 @@ function Footer() {
                         />
                         <img
                             src={codLogo}
-                            className="cursor-pointer h-15"
+                            className="cursor-pointer h-15 mt-10"
                             alt="Thanh toán khi nhận hàng"
                             title="Thanh toán khi nhận hàng"
                         />

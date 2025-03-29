@@ -31,7 +31,8 @@ function ScrollTop() {
             {isVisible &&
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-4 right-4 p-3 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-300 z-50"
+                    className="fixed bottom-4 right-4 p-3 rounded-full bg-blue-500 text-white shadow-lg 
+                    hover:bg-blue-600 transition-all duration-300 z-50"
                     aria-label="Scroll to top"
                 >
                     <FiArrowUp className="w-6 h-6" />

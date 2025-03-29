@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrderById, updateOrderStatus, updateTransactionStatus } from "~/services/admin/order-service";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import FormatCurrency from "~/components/utils/FormatCurrency";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -278,7 +278,6 @@ function OrderDetail() {
                     </div>
                 )}
             </div>
-            <ToastContainer />
         </>
     );
 }

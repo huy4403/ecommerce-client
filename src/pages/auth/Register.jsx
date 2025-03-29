@@ -6,16 +6,17 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa";
 import { register as registerService } from "~/services/auth/register-service";
-import { Toast, ToastContainer } from "~/components/ui/Toast";
-import { useState } from "react";
+import { Toast } from "~/components/ui/Toast";
+import { useState, useContext } from "react";
+import { Context } from "~/ContextProvider";
 
 function Register() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const context = useContext(Context);
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm()
 
@@ -36,12 +37,11 @@ function Register() {
                 localStorage.setItem('avatar', res.data.data.avatar)
                 localStorage.setItem('fullname', res.data.data.fullName)
 
-                Toast.success("Đăng ký tài khoản thành công!");
+                context.setIsLogin(true);
 
                 navigate('/');
             })
             .catch(err => {
-                console.log(err.response.data.details);
                 Toast.error(err.response.data.details);
                 setIsLoading(false);
             })
@@ -174,7 +174,7 @@ function Register() {
                                 disabled={isLoading}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm 
                             font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 
-                            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                            focus-visible:outline-2 focus-visible:outline-offset-2
                             focus-visible:outline-indigo-600 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 {isLoading ? (
@@ -198,7 +198,6 @@ function Register() {
                     </p>
                 </div>
             </div>
-            <ToastContainer />
         </>
     )
 }

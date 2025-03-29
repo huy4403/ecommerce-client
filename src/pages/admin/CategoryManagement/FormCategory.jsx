@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { Toast, ToastContainer } from '~/components/ui/Toast';
+import { Toast } from '~/components/ui/Toast';
 import ConfirmationDialog from '~/components/ui/ConfirmationDialog';
 import { getCategoryById, getAllCategoryAdmin } from '~/services/category/category-service';
 import { createCategory, updateCategory } from '~/services/admin/category-service';
@@ -174,7 +174,6 @@ const FormCategory = () => {
                     </div>
                 </form>
             </div>
-            <ToastContainer />
         </>
     );
 };
