@@ -7,7 +7,6 @@ import { Fragment } from 'react'
 import ScrollTop from '~/components/ui/ScrollTop'
 import Messenger from '~/components/ui/Messenger';
 import { ToastContainer } from '~/components/ui/Toast';
-
 function App() {
 
   const routes = [...CustomerRoutes, ...AdminRoutes];

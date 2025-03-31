@@ -108,6 +108,16 @@ function Footer() {
                     </div>
                 </div>
             </div>
+            <div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6991201366286!2d105.9351279108517!3d21.004694688523884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135a8cc2b344dfb%3A0x8301ee6bb3881433!2zTmcuIDkwIFRyw6J1IFF14buzLCB0dC4gVHLDonUgUXXhu7MsIEdpYSBMw6JtLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1743299050450!5m2!1svi!2s"
+                    className="w-full h-[450px] rounded-xl"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+            </div>
             <div className="bg-pink-100 text-center py-4 border-t-1">
                 <p>© 2025 Đoàn Huy Ecommerce. Tất cả các quyền được bảo lưu.</p>
                 <p className="text-xs mt-2">Đoàn Huy Ecommerce - Địa chỉ: Hà Nội, Việt Nam.</p>

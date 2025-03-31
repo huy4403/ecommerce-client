@@ -24,36 +24,16 @@ function Header() {
     const [categories, setCategories] = useState([]);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
     const categoryModalRef = useRef(null);
-    const userMenuRef = useRef(null);
-    const mobileMenuRef = useRef(null);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-
-            if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-                setIsUserMenuOpen(false);
-            }
-
-            if (categoryModalRef.current && !categoryModalRef.current.contains(event.target)) {
-                setIsCategoryModalOpen(false);
-            }
-            if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-                setIsMenuOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isMenuOpen]);
 
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos = window.pageYOffset;
             setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
             setPrevScrollPos(currentScrollPos);
+            setIsMenuOpen(false);
             setIsUserMenuOpen(false);
         };
 
@@ -85,6 +65,19 @@ function Header() {
         })()
     }, [])
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (categoryModalRef.current && !categoryModalRef.current.contains(event.target)) {
+                setIsCategoryModalOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const handleSearch = (keyword) => {
         setSearchKeyword(keyword);
         if (thisPath.pathname === '/products') {
@@ -111,19 +104,15 @@ function Header() {
     }
 
     const UserMenu = () => (
-        <div ref={userMenuRef} className="absolute -right-18 top-12 w-48 bg-white rounded-lg shadow-lg py-2 z-50 text-center">
+        <div className="absolute -right-18 top-12 w-48 bg-white rounded-lg shadow-lg py-2 z-50 text-center">
             <div className="px-4 py-2 border-b text-center">
                 <p className="font-semibold text-center">{fullname}</p>
             </div>
-            <Link to="/profile" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center"
-                onClick={() => setIsUserMenuOpen(false)}
-            >
+            <Link to="/profile" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center">
                 <FiSettings className="mr-2" size={20} />
                 Tài khoản
             </Link>
-            <Link to="/orders" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center"
-                onClick={() => setIsUserMenuOpen(false)}
-            >
+            <Link to="/orders" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center">
                 <FiPackage className="mr-2" size={20} />
                 Đơn hàng
             </Link>
@@ -298,7 +287,7 @@ function Header() {
 
             {/* Menu mobile */}
             {isMenuOpen && (
-                <div ref={mobileMenuRef} className={`md:hidden bg-white shadow-lg p-4 flex justify-center text-center border-2 
+                <div className={`md:hidden bg-white shadow-lg p-4 flex justify-center text-center border-2 
                 border-pink-300 w-full fixed z-40 transition-transform duration-300 ${visible ? 'translate-y-18' : '-translate-y-full'}`}>
                     <div className="flex flex-col items-center space-y-4 w-full">
                         <input
@@ -321,30 +310,23 @@ function Header() {
                                     </div>
                                 </div>
 
-                                <Link to="/profile" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
+                                <Link to="/profile" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                                     <FiSettings className="text-2xl" />
                                     <span>Tài khoản</span>
                                 </Link>
 
 
-                                <Link to="/cart" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
+                                <Link to="/cart" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                                     <div className="relative">
                                         <FiShoppingCart className="text-2xl" />
-                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center
-                                        justify-center text-xs">
+                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                                             {context.cartCount}
                                         </span>
                                     </div>
                                     <span>Giỏ hàng</span>
                                 </Link>
 
-                                <Link to="/orders" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
+                                <Link to="/orders" className="flex items-center justify-center space-x-4 w-full py-2 hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                                     <FiPackage className="text-2xl" />
                                     <span>Đơn hàng</span>
                                 </Link>
@@ -353,7 +335,8 @@ function Header() {
                                 hover:bg-gray-100 cursor-pointer" onClick={() => {
                                         handleLogOut();
                                         setIsMenuOpen(false);
-                                    }}>
+                                    }
+                                    }>
                                     <FiLogOut className="text-2xl" />
                                     <span>Đăng xuất</span>
                                 </div>

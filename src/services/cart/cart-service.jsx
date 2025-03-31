@@ -12,3 +12,22 @@ export const addToCart = async (productVariantId) => {
     });
     return response;
 }
+
+export const getUserCart = async () => {
+    const response = await instance.get("cart");
+    return response;
+}
+
+export const deleteCartItem = async (id) => {
+    const response = await instance.delete(`cart/${id}`);
+    return response;
+}
+
+export const updateCartItemQuantity = async (id, quantity) => {
+    const response = await instance.put(`cart/${id}`, {
+        quantity
+    });
+    return response;
+}
+
+

@@ -120,7 +120,7 @@ const ProductDetail = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pt-26.5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="relative">
                     <div
@@ -237,7 +237,7 @@ const ProductDetail = () => {
                         disabled={!isVariantAvailable()}
                         className={`
               mt-8 w-full py-3 px-8 rounded-md text-white font-medium flex items-center justify-center gap-2
-              transition-all duration-300 shadow-md hover:shadow-lg
+              transition-all duration-300 shadow-md hover:shadow-lg h-13 lg:h-10
               ${isVariantAvailable()
                                 ? "bg-blue-600 hover:bg-blue-700 transform hover:-translate-y-1"
                                 : "bg-gray-400 cursor-not-allowed"}

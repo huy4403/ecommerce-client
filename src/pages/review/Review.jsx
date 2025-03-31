@@ -91,7 +91,7 @@ function Review({ id, bought }) {
 
     return (
         <div>
-            <div className="mt-50">
+            <div className="mt-10 lg:mt-20">
                 <h2 className="text-xl font-bold mb-4">Đánh giá</h2>
 
                 <div className="space-y-4">
@@ -111,9 +111,9 @@ function Review({ id, bought }) {
                                     <span className="ml-2 text-gray-500 text-sm">{review.date}</span>
                                 </div>
                                 <p className="text-gray-700">{review.comment}</p>
-                                {review.reviewImages && review.reviewImages.length > 0 && (
+                                {review.images && review.images.length > 0 && (
                                     <div className="mt-3 flex flex-wrap gap-2">
-                                        {review.reviewImages.map((img, index) => (
+                                        {review.images.map((img, index) => (
                                             <img
                                                 key={index}
                                                 src={img}
@@ -204,14 +204,15 @@ function Review({ id, bought }) {
                         </div>
                         <button
                             type="submit"
-                            className={`mt-4 px-4 py-2 rounded-md text-white ${isSubmitting ? 'bg-gray-500' : 'bg-blue-600 hover:bg-blue-700'}`}
+                            className={`mt-4 px-4 py-2 rounded-md text-white ${isSubmitting ? 'bg-gray-500' : 'bg-blue-600 hover:bg-blue-700'}
+                            w-full lg:w-25 h-13 lg:h-10`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Đang gửi...' : 'Đánh giá'}
                         </button>
                     </form>
                 ) : (
-                    <p className="text-gray-600 mb-4">Mua sản phẩm này để đánh giá</p>
+                    <p className="text-gray-600 mb-4 text-center">Mua sản phẩm này để đánh giá</p>
                 )}
             </div>
         </div>

@@ -78,8 +78,8 @@ function Products() {
     return (
 
         <>
-            <div className="flex-1 px-4 mt-10">
-                <p className="mb-2 text-gray-700 font-bold">Khoảng giá:</p>
+            <div className="flex-1 px-2 sm:px-4 pt-20 sm:pt-28.5 mx-2 sm:mx-4 md:mx-8 lg:mx-100">
+                <p className="mb-2 text-gray-700 font-bold text-sm sm:text-base">Khoảng giá:</p>
                 <Slider
                     range
                     min={0}
@@ -87,15 +87,10 @@ function Products() {
                     defaultValue={[0, 100000000]}
                     value={priceRange}
                     onChange={handlePriceRange}
-                    // className="mb-4"
-                    // trackStyle={[{ backgroundColor: '#E5E7EB' }]}
-                    // handleStyle={[
-                    //     { backgroundColor: '#E5E7EB', borderColor: '#E5E7EB' },
-                    //     { backgroundColor: '#E5E7EB', borderColor: '#E5E7EB' }
-                    // ]}
                     railStyle={{ backgroundColor: '#E5E7EB' }}
+                    className="w-full"
                 />
-                <div className="flex justify-between mt-2 text-sm text-gray-600">
+                <div className="flex justify-between mt-2 text-xs sm:text-sm text-gray-600">
                     <span>{FormatCurrency(priceRange[0])}</span>
                     <span>{FormatCurrency(priceRange[1])}</span>
                 </div>

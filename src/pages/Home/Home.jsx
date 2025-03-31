@@ -107,7 +107,7 @@ function Home() {
 
     return (
         <>
-            <div className="bg-gray-50 w-full">
+            <div className="bg-gray-50 w-full pt-18.5">
                 {/* Hero Banner Slider */}
                 <div className="relative w-full">
                     <Slider {...sliderSettings}>

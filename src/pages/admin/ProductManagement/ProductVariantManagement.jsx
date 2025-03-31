@@ -6,29 +6,29 @@ import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 
 function ProductVariantManagement({ id, attributes }) {
 
-    // const [attributes, setAttributes] = useState();
     const [variants, setVariants] = useState([]);
     const [newVariants, setNewVariants] = useState([]);
     const [editingQuantity, setEditingQuantity] = useState({});
 
-    const handleRemoveAttributeFromVariant = (variantIndex) => {
-        const updatedVariants = [...newVariants];
-        updatedVariants[variantIndex].attributes.splice(variantIndex, 1);
-        setNewVariants(updatedVariants);
-    }
-
     const handleAddVariant = () => {
-        // Only add new variant if there are no empty variants
+
         const hasEmptyVariant = newVariants.some(variant =>
             variant.attributes.length === 0 ||
             variant.quantity === 0 ||
-            variant.attributes.some(attr => !attr.id || !attr.value)
+            variant.attributes.some(attr => !attr.value)
         );
 
         if (!hasEmptyVariant) {
+
+            const initialAttributes = attributes.map(attr => ({
+                id: attr.id,
+                name: attr.name,
+                value: ''
+            }));
+
             setNewVariants([{
                 productId: id,
-                attributes: [],
+                attributes: initialAttributes,
                 quantity: 0
             }, ...newVariants]);
         } else {
@@ -42,25 +42,27 @@ function ProductVariantManagement({ id, attributes }) {
         setNewVariants(updatedVariants);
     }
 
-    const handleAddAttributeToVariant = (variantIndex) => {
-        const currentVariant = newVariants[variantIndex];
+    useEffect(() => {
+        setNewVariants(prevVariants => {
+            return prevVariants.map(variant => {
+                const existingValues = {};
+                variant.attributes.forEach(attr => {
+                    existingValues[attr.id] = attr.value;
+                });
 
-        const hasIncompleteAttribute = currentVariant.attributes.some(attr =>
-            !attr.id || !attr.value
-        );
+                const newAttributes = attributes.map(attr => ({
+                    id: attr.id,
+                    name: attr.name,
+                    value: existingValues[attr.id] || ''
+                }));
 
-        if (!hasIncompleteAttribute) {
-            const updatedVariants = [...newVariants];
-            updatedVariants[variantIndex].attributes.push({
-                id: '',
-                name: '',
-                value: ''
+                return {
+                    ...variant,
+                    attributes: newAttributes
+                };
             });
-            setNewVariants(updatedVariants);
-        } else {
-            Toast.error("Vui lòng hoàn thành thuộc tính hiện tại trước khi thêm mới");
-        }
-    }
+        });
+    }, [attributes]);
 
     const handleConfirmVariant = async (variantIndex) => {
         const variant = newVariants[variantIndex];
@@ -68,7 +70,13 @@ function ProductVariantManagement({ id, attributes }) {
             Toast.error("Số lượng phải lớn hơn 0");
             return;
         }
-        if (variant.attributes.some(attr => !attr.id || !attr.value)) {
+
+        if (variant.attributes.length !== attributes.length) {
+            Toast.error("Số lượng thuộc tính không khớp với sản phẩm");
+            return;
+        }
+
+        if (variant.attributes.some(attr => !attr.value)) {
             Toast.error("Vui lòng điền đầy đủ thông tin thuộc tính");
             return;
         }
@@ -95,7 +103,6 @@ function ProductVariantManagement({ id, attributes }) {
                         handleRemoveVariant(variantIndex);
                     } catch (err) {
                         if (err.response.data.error == "Product variant already exists") {
-
                             Toast.error("Biến thể đã tồn tại");
                         }
                         else {
@@ -214,39 +221,14 @@ function ProductVariantManagement({ id, attributes }) {
                         {variant.id && <div className="text-sm text-gray-500 mb-2">ID: {variant.id}</div>}
                         {variant.attributes.map((attr, attrIndex) => (
                             <div key={attrIndex} className="flex gap-4 items-center">
-                                <select
-                                    className="rounded-lg border-gray-300 flex-1 px-4 py-2 focus:ring-2 focus:ring-indigo-500
-                                    focus:border-indigo-500 transition-all duration-200"
-                                    value={attr.id}
-                                    onChange={(e) => {
-                                        const selectedAttribute = attributes.find(a => a.id === parseInt(e.target.value));
-                                        const attributeExists = variant.attributes.some(
-                                            (existingAttr, idx) => idx !== attrIndex && existingAttr.id === selectedAttribute.id
-                                        );
-
-                                        if (attributeExists) {
-                                            Toast.error("Thuộc tính này đã tồn tại trong biến thể");
-                                            return;
-                                        }
-
-                                        const updatedVariants = [...newVariants];
-                                        updatedVariants[variantIndex].attributes[attrIndex] = {
-                                            ...attr,
-                                            id: selectedAttribute.id,
-                                            name: selectedAttribute.name
-                                        };
-                                        setNewVariants(updatedVariants);
-                                    }}
-                                >
-                                    <option value="" className="text-gray-400">Chọn thuộc tính</option>
-                                    {attributes && attributes.map((a) => (
-                                        <option key={a.id} value={a.id}>{a.name}</option>
-                                    ))}
-                                </select>
+                                <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg border border-gray-300">
+                                    {attr.name}
+                                </div>
                                 <input
                                     type="text"
                                     placeholder="Giá trị thuộc tính"
-                                    className="rounded-lg border-gray-300 flex-1 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                                    className="rounded-lg border-gray-300 flex-1 px-4 py-2 focus:ring-2 focus:ring-indigo-500
+                                    focus:border-indigo-500 transition-all duration-200 border-2"
                                     value={attr.value}
                                     onChange={(e) => {
                                         const updatedVariants = [...newVariants];
@@ -254,27 +236,11 @@ function ProductVariantManagement({ id, attributes }) {
                                         setNewVariants(updatedVariants);
                                     }}
                                 />
-                                <button
-                                    type="button"
-                                    onClick={() => handleRemoveAttributeFromVariant(variantIndex, attrIndex)}
-                                    className="p-2 text-red-600 hover:text-red-800 rounded-full hover:bg-red-100 transition-colors duration-200"
-                                >
-                                    <FiX size={20} />
-                                </button>
                             </div>
                         ))}
                     </div>
 
                     <div className="flex gap-6 items-center mt-6 pt-4 border-t border-gray-200">
-                        <div className="flex-1">
-                            <button
-                                type="button"
-                                onClick={() => handleAddAttributeToVariant(variantIndex)}
-                                className="px-4 py-2 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors duration-200 flex items-center text-sm"
-                            >
-                                <FiPlus className="mr-2" /> Thêm thuộc tính
-                            </button>
-                        </div>
                         <div className="flex-1">
                             <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">Số lượng</label>
                             <input
@@ -304,7 +270,7 @@ function ProductVariantManagement({ id, attributes }) {
             ))}
 
             <div className="space-y-6">
-                {/* Existing variants - read only */}
+
                 {variants.map((variant) => (
                     <div key={variant.id} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                         <div className="space-y-4">
