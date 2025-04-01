@@ -15,8 +15,8 @@ function Header() {
 
     const context = useContext(Context);
 
-    const fullname = localStorage.getItem("fullname") || null;
-    const avatar = localStorage.getItem("avatar") || null;
+    const fullname = context.fullName || localStorage.getItem("fullname") || null;
+    const avatar = context.avatar || localStorage.getItem("avatar") || null;
     const token = localStorage.getItem("token") || null;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);

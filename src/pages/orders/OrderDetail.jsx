@@ -138,7 +138,11 @@ function OrderDetail() {
                                     className="w-20 h-20 object-cover rounded"
                                 />
                                 <div className="ml-4 flex-grow">
-                                    <h3 className="font-medium">{item.title}</h3>
+                                    <h3 className="font-medium">
+                                        <Link to={`/product/${item.productId}`} className="hover:text-blue-600 transition-colors">
+                                            {item.title}
+                                        </Link>
+                                    </h3>
                                     <p className="text-sm text-gray-500">{item.brand}</p>
                                     <div className="text-sm text-gray-500">
                                         {item.attribute.map((attr, index) => (

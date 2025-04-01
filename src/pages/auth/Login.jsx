@@ -107,7 +107,7 @@ const Login = () => {
                             </div>
                         </div>
                         <div className="text-sm float-end">
-                            <Link to={'/forgot'} className="font-semibold text-indigo-600 hover:text-indigo-500">
+                            <Link to='/forgot' className="font-semibold text-indigo-600 hover:text-indigo-500">
                                 Quên mật khẩu?
                             </Link>
                         </div>

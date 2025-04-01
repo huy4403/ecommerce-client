@@ -10,3 +10,15 @@ export const createAddress = async (address) => {
     return response;
 }
 
+export const deleteAddress = async (id) => {
+    const response = await instance.delete(`address/${id}`);
+    return response;
+}
+
+export const updateAddress = async (id, address) => {
+    const response = await instance.put(`address/${id}`, address);
+    return response;
+}
+
+
+

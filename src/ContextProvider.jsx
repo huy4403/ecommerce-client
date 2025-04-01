@@ -10,6 +10,8 @@ function ContextProvider({ children }) {
 
     const [isLogin, setIsLogin] = useState(null);
 
+    const [avatar, setAvatar] = useState(null);
+    const [fullName, setFullName] = useState(null);
 
     const value = {
         cartCount,
@@ -19,7 +21,11 @@ function ContextProvider({ children }) {
         keyword,
         setKeyword,
         isLogin,
-        setIsLogin
+        setIsLogin,
+        avatar,
+        setAvatar,
+        fullName,
+        setFullName
     }
 
     return (

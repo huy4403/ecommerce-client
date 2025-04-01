@@ -1,5 +1,6 @@
 import Home from '~/pages/Home/Home';
 import Login from '~/pages/auth/Login';
+import Forgot from '~/pages/auth/Forgot';
 import Register from '~/pages/auth/Register';
 import { DefaultLayout } from '~/components/Layouts';
 import ProductDetail from '~/pages/product/ProductDetail';
@@ -29,6 +30,7 @@ const CustomerRoutes = [
     { path: '*', component: NotFound, layout: null },
     { path: '/order/result/:id', component: Result, layout: DefaultLayout },
     { path: '/processing-checkout', component: ProcessCheckout, layout: null },
+    { path: '/forgot', component: Forgot, layout: null },
 ]
 
 export default CustomerRoutes;
