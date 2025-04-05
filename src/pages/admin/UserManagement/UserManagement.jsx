@@ -62,6 +62,7 @@ function UserManagement() {
 
     return (
         <>
+            <title>Quản lý khách hàng</title>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">Quản lý khách hàng</h2>
 

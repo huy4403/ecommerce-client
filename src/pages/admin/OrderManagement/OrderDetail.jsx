@@ -110,6 +110,7 @@ function OrderDetail() {
 
     return (
         <>
+            <title>Chi tiết đơn hàng</title>
             <div className="container mx-auto px-4 py-8">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center">

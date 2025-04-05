@@ -91,7 +91,7 @@ function Home() {
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 5000,
+        autoplaySpeed: 3000,
         arrows: true
     };
 
@@ -102,7 +102,7 @@ function Home() {
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 6000
+        autoplaySpeed: 3000
     };
 
     return (
@@ -113,20 +113,23 @@ function Home() {
                     <Slider {...sliderSettings}>
                         {banners.map((banner) => (
                             <div key={banner.id} className="relative">
-                                <div className="h-[600px] w-full relative">
+                                <div className="h-[400px] w-full relative">
                                     <img
                                         src={banner.image}
                                         alt={banner.title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-center"
                                     />
                                     <div className="absolute inset-0 flex items-center">
                                         <div className="container mx-auto px-6 w-full">
                                             <div className="max-w-lg">
-                                                <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">{banner.title}</h1>
+                                                <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+                                                    {banner.title}
+                                                </h1>
                                                 <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-md">{banner.description}</p>
                                                 <Link
                                                     to={banner.link}
-                                                    className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 rounded-lg font-medium inline-flex items-center transition duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                                                    className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 rounded-lg font-medium inline-flex
+                                                    items-center transition duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                                                 >
                                                     Mua ngay <FiArrowRight className="ml-2" />
                                                 </Link>

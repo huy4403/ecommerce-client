@@ -76,102 +76,105 @@ function OrderDetail() {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container mx-auto px-4 max-w-4xl pb-8 pt-26.5"
-        >
-            <Link
-                to="/orders"
-                className="inline-block mb-4 text-blue-600 hover:text-blue-800 transition-colors"
+        <>
+            <title>Chi tiết đơn hàng</title>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="container mx-auto px-4 max-w-4xl pb-8 pt-26.5"
             >
-                <span className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-                    </svg>
-                    Quay lại danh sách đơn hàng
-                </span>
-            </Link>
-
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold">Đơn hàng #{order.id}</h1>
-                    <span className={`font-semibold ${getStatusColor(order.orderStatus)}`}>
-                        {translateStatus(order.orderStatus)}
+                <Link
+                    to="/orders"
+                    className="inline-block mb-4 text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                    <span className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                        </svg>
+                        Quay lại danh sách đơn hàng
                     </span>
-                </div>
+                </Link>
 
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <h2 className="font-semibold mb-2">Thông tin giao hàng</h2>
-                        <div className="text-gray-600">
-                            <p className="font-medium">{order.shippingAddress.fullName}</p>
-                            <p>{order.shippingAddress.mobile}</p>
-                            <p>{order.shippingAddress.address}</p>
-                            <p>{order.shippingAddress.description}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 className="font-semibold mb-2">Thông tin đơn hàng</h2>
-                        <div className="text-gray-600">
-                            <p>Ngày đặt: {order.orderDate}</p>
-                            <p>Phương thức thanh toán: {translatePaymentMethod(order.paymentMethod)}</p>
-                            <p>Ngày giao hàng dự kiến: {order.deliveryDate}</p>
-                            <p>Trạng thái thanh toán: {translatePaymentStatus(order.transactionStatus)}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="border-t pt-6">
-                    <h2 className="font-semibold mb-4">Chi tiết sản phẩm</h2>
-                    <div className="space-y-4">
-                        {order.items.map((item) => (
-                            <motion.div
-                                key={item.productId}
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                className="flex items-center p-4 border rounded-lg"
-                            >
-                                <img
-                                    src={item.image}
-                                    alt={item.title}
-                                    className="w-20 h-20 object-cover rounded"
-                                />
-                                <div className="ml-4 flex-grow">
-                                    <h3 className="font-medium">
-                                        <Link to={`/product/${item.productId}`} className="hover:text-blue-600 transition-colors">
-                                            {item.title}
-                                        </Link>
-                                    </h3>
-                                    <p className="text-sm text-gray-500">{item.brand}</p>
-                                    <div className="text-sm text-gray-500">
-                                        {item.attribute.map((attr, index) => (
-                                            <span key={attr.id}>
-                                                {attr.value}
-                                                {index < item.attribute.length - 1 && ' - '}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <p className="font-medium">{FormatCurrency(item.price)}</p>
-                                    <p className="text-sm text-gray-500">x{item.quantity}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="border-t mt-6 pt-6">
-                    <div className="flex justify-between items-center">
-                        <span className="font-semibold">Tổng tiền ({order.totalItem} sản phẩm):</span>
-                        <span className="text-xl font-bold text-blue-600">
-                            {FormatCurrency(order.totalPrice)}
+                <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-2xl font-bold">Đơn hàng #{order.id}</h1>
+                        <span className={`font-semibold ${getStatusColor(order.orderStatus)}`}>
+                            {translateStatus(order.orderStatus)}
                         </span>
                     </div>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h2 className="font-semibold mb-2">Thông tin giao hàng</h2>
+                            <div className="text-gray-600">
+                                <p className="font-medium">{order.shippingAddress.fullName}</p>
+                                <p>{order.shippingAddress.mobile}</p>
+                                <p>{order.shippingAddress.address}</p>
+                                <p>{order.shippingAddress.description}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 className="font-semibold mb-2">Thông tin đơn hàng</h2>
+                            <div className="text-gray-600">
+                                <p>Ngày đặt: {order.orderDate}</p>
+                                <p>Phương thức thanh toán: {translatePaymentMethod(order.paymentMethod)}</p>
+                                <p>Ngày giao hàng dự kiến: {order.deliveryDate}</p>
+                                <p>Trạng thái thanh toán: {translatePaymentStatus(order.transactionStatus)}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="border-t pt-6">
+                        <h2 className="font-semibold mb-4">Chi tiết sản phẩm</h2>
+                        <div className="space-y-4">
+                            {order.items.map((item) => (
+                                <motion.div
+                                    key={item.productId}
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    className="flex items-center p-4 border rounded-lg"
+                                >
+                                    <img
+                                        src={item.image}
+                                        alt={item.title}
+                                        className="w-20 h-20 object-cover rounded"
+                                    />
+                                    <div className="ml-4 flex-grow">
+                                        <h3 className="font-medium">
+                                            <Link to={`/product/${item.productId}`} className="hover:text-blue-600 transition-colors">
+                                                {item.title}
+                                            </Link>
+                                        </h3>
+                                        <p className="text-sm text-gray-500">{item.brand}</p>
+                                        <div className="text-sm text-gray-500">
+                                            {item.attribute.map((attr, index) => (
+                                                <span key={attr.id}>
+                                                    {attr.value}
+                                                    {index < item.attribute.length - 1 && ' - '}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="font-medium">{FormatCurrency(item.price)}</p>
+                                        <p className="text-sm text-gray-500">x{item.quantity}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="border-t mt-6 pt-6">
+                        <div className="flex justify-between items-center">
+                            <span className="font-semibold">Tổng tiền ({order.totalItem} sản phẩm):</span>
+                            <span className="text-xl font-bold text-blue-600">
+                                {FormatCurrency(order.totalPrice)}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </motion.div>
+            </motion.div>
+        </>
     );
 }
 

@@ -97,154 +97,157 @@ function Cart() {
     }
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container mx-auto px-4 pb-8 pt-26.5 max-w-4xl"
-        >
-            <h1 className="text-2xl font-bold mb-8">Giỏ hàng của bạn</h1>
+        <>
+            <title>Giỏ hàng</title>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="container mx-auto px-4 pb-8 pt-26.5 max-w-4xl"
+            >
+                <h1 className="text-2xl font-bold mb-8">Giỏ hàng của bạn</h1>
 
-            {cartItems.length === 0 ? (
-                <div className="text-center py-8">
-                    <p className="text-gray-500">Giỏ hàng trống</p>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700
+                {cartItems.length === 0 ? (
+                    <div className="text-center py-8">
+                        <p className="text-gray-500">Giỏ hàng trống</p>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700
                     mt-10 transition-all">
-                        <Link to="/">
-                            Tiếp tục mua hàng
-                        </Link>
-                    </button>
-                </div>
-            ) : (
-                <div className="space-y-4 mb-24">
-                    <div className="flex items-center mb-4">
-                        <input
-                            type="checkbox"
-                            checked={selectAll}
-                            onChange={handleSelectAll}
-                            className="h-4 w-4 text-blue-600 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all accent-blue-500"
-                        />
-                        <span className="ml-2">Chọn tất cả</span>
+                            <Link to="/">
+                                Tiếp tục mua hàng
+                            </Link>
+                        </button>
                     </div>
-
-                    {cartItems.map((item) => (
-                        <motion.div
-                            key={item.id}
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            className="flex items-center bg-white p-3 rounded-lg shadow cursor-pointer"
-                            onClick={() => handleSelectItem(item.id)}
-                        >
+                ) : (
+                    <div className="space-y-4 mb-24">
+                        <div className="flex items-center mb-4">
                             <input
                                 type="checkbox"
-                                checked={item.selected}
-                                onChange={() => handleSelectItem(item.id)}
-                                className="h-4 w-4 text-blue-600 mr-3 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all accent-blue-500"
-                                onClick={(e) => e.stopPropagation()}
+                                checked={selectAll}
+                                onChange={handleSelectAll}
+                                className="h-4 w-4 text-blue-600 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all accent-blue-500"
                             />
+                            <span className="ml-2">Chọn tất cả</span>
+                        </div>
 
-                            <div className="w-20 h-20">
-                                <img
-                                    src={item.productImageUrl}
-                                    alt={item.title}
-                                    className="w-full h-full object-cover rounded"
-                                />
-                            </div>
-
-                            <div className="flex-1 ml-3">
-                                <Link
-                                    to={`/product/${item.productId}`}
-                                    className="text-base font-semibold hover:text-red-600 transition-colors"
-                                    title="Xem sản phẩm"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    {item.title}
-                                </Link>
-                                <div className="text-sm text-gray-600 mt-1">
-                                    {item.attributeValues.map((attr, index) => (
-                                        <span key={attr.id}>
-                                            {attr.value}
-                                            {index < item.attributeValues.length - 1 ? ' - ' : ''}
-                                        </span>
-                                    ))}
-                                </div>
-                                <p className="text-blue-600 font-bold mt-1">
-                                    {FormatCurrency(item.price)}
-                                </p>
-                            </div>
-
-                            <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-                                <motion.button
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={() => handleQuantityChange(item.id, -1)}
-                                    className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
-                                    disabled={item.quantityBuy <= 1}
-                                >
-                                    <FiMinus />
-                                </motion.button>
-                                <span className="w-8 text-center font-medium">{item.quantityBuy}</span>
-                                <motion.button
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={() => handleQuantityChange(item.id, 1)}
-                                    className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
-                                    disabled={item.quantityBuy >= item.stock}
-                                >
-                                    <FiPlus />
-                                </motion.button>
-                            </div>
-                            <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                className="ml-4 p-2 text-red-600 hover:text-red-800 transition-colors rounded-full hover:bg-red-50"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteItem(item.id);
-                                }}
+                        {cartItems.map((item) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="flex items-center bg-white p-3 rounded-lg shadow cursor-pointer"
+                                onClick={() => handleSelectItem(item.id)}
                             >
-                                <FiTrash2 size={18} />
-                            </motion.button>
-                        </motion.div>
-                    ))}
-                </div>
-            )}
+                                <input
+                                    type="checkbox"
+                                    checked={item.selected}
+                                    onChange={() => handleSelectItem(item.id)}
+                                    className="h-4 w-4 text-blue-600 mr-3 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all accent-blue-500"
+                                    onClick={(e) => e.stopPropagation()}
+                                />
 
-            <motion.div
-                className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t p-4"
-                initial={{ y: 100 }}
-                animate={{ y: 0 }}
-            >
-                <div className="container mx-auto flex justify-between items-center max-w-4xl">
-                    <div>
-                        <p className="text-sm text-gray-600">Tổng thanh toán:</p>
-                        <motion.p
-                            className="text-xl font-bold text-blue-600"
-                            animate={{ scale: [1, 1.1, 1] }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            {FormatCurrency(total)}
-                        </motion.p>
+                                <div className="w-20 h-20">
+                                    <img
+                                        src={item.productImageUrl}
+                                        alt={item.title}
+                                        className="w-full h-full object-cover rounded"
+                                    />
+                                </div>
+
+                                <div className="flex-1 ml-3">
+                                    <Link
+                                        to={`/product/${item.productId}`}
+                                        className="text-base font-semibold hover:text-red-600 transition-colors"
+                                        title="Xem sản phẩm"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        {item.title}
+                                    </Link>
+                                    <div className="text-sm text-gray-600 mt-1">
+                                        {item.attributeValues.map((attr, index) => (
+                                            <span key={attr.id}>
+                                                {attr.value}
+                                                {index < item.attributeValues.length - 1 ? ' - ' : ''}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <p className="text-blue-600 font-bold mt-1">
+                                        {FormatCurrency(item.price)}
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
+                                    <motion.button
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => handleQuantityChange(item.id, -1)}
+                                        className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+                                        disabled={item.quantityBuy <= 1}
+                                    >
+                                        <FiMinus />
+                                    </motion.button>
+                                    <span className="w-8 text-center font-medium">{item.quantityBuy}</span>
+                                    <motion.button
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => handleQuantityChange(item.id, 1)}
+                                        className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+                                        disabled={item.quantityBuy >= item.stock}
+                                    >
+                                        <FiPlus />
+                                    </motion.button>
+                                </div>
+                                <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="ml-4 p-2 text-red-600 hover:text-red-800 transition-colors rounded-full hover:bg-red-50"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteItem(item.id);
+                                    }}
+                                >
+                                    <FiTrash2 size={18} />
+                                </motion.button>
+                            </motion.div>
+                        ))}
                     </div>
-                    <Link to="/checkout" state={{ isCheckout: true }}>
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            disabled={!cartItems.some(item => item.selected)}
-                            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium
+                )}
+
+                <motion.div
+                    className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t p-4"
+                    initial={{ y: 100 }}
+                    animate={{ y: 0 }}
+                >
+                    <div className="container mx-auto flex justify-between items-center max-w-4xl">
+                        <div>
+                            <p className="text-sm text-gray-600">Tổng thanh toán:</p>
+                            <motion.p
+                                className="text-xl font-bold text-blue-600"
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {FormatCurrency(total)}
+                            </motion.p>
+                        </div>
+                        <Link to="/checkout" state={{ isCheckout: true }}>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                disabled={!cartItems.some(item => item.selected)}
+                                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium
                             hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg
                             w-45 md:w-100 lg:w-auto mr-13 md:mr-13 lg:mr-0"
-                            onClick={() => {
-                                localStorage.setItem('items', JSON.stringify(cartItemSelected));
-                                sessionStorage.setItem('isCheckout', true);
-                            }}
-                        >
-                            Đặt hàng ({cartItemSelected.length})
-                        </motion.button>
-                    </Link>
-                </div>
+                                onClick={() => {
+                                    localStorage.setItem('items', JSON.stringify(cartItemSelected));
+                                    sessionStorage.setItem('isCheckout', true);
+                                }}
+                            >
+                                Đặt hàng ({cartItemSelected.length})
+                            </motion.button>
+                        </Link>
+                    </div>
+                </motion.div>
             </motion.div>
-        </motion.div>
+        </>
     );
 }
 

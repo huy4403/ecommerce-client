@@ -18,6 +18,7 @@ function Header() {
     const fullname = context.fullName || localStorage.getItem("fullname") || null;
     const avatar = context.avatar || localStorage.getItem("avatar") || null;
     const token = localStorage.getItem("token") || null;
+    const role = localStorage.getItem("role") || null;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -115,6 +116,13 @@ function Header() {
             <div className="px-4 py-2 border-b text-center">
                 <p className="font-semibold text-center">{fullname}</p>
             </div>
+            {role === "ADMIN" && (
+                <Link to="/admin" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center"
+                    onClick={() => setIsUserMenuOpen(false)}
+                >
+                    Admin Dashboard
+                </Link>
+            )}
             <Link to="/profile" className="flex items-center justify-center px-4 py-2 hover:bg-gray-100 text-center"
                 onClick={() => setIsUserMenuOpen(false)}
             >

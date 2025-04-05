@@ -191,6 +191,7 @@ const ProductManagement = () => {
 
     return (
         <>
+            <title>Quản lý sản phẩm</title>
             <div className="container mx-auto px-4 py-8">
                 <div className="mb-8 space-y-4">
                     <div className="flex justify-between items-center mb-6">

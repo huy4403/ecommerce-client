@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
-
+import { useLocation } from 'react-router-dom';
 function ScrollTop() {
+    const location = useLocation();
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => {
@@ -25,6 +26,10 @@ function ScrollTop() {
             window.removeEventListener("scroll", toggleVisibility);
         };
     }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location])
 
     return (
         <>

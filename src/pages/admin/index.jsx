@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { FiUsers, FiBox, FiShoppingBag, FiPieChart, FiGrid, FiMenu, FiX } from "react-icons/fi";
+import { FiUsers, FiBox, FiShoppingBag, FiPieChart, FiGrid, FiMenu, FiX, FiHome } from "react-icons/fi";
 import UserManagement from "~/pages/admin/UserManagement/UserManagement";
 import CategoryManagement from "~/pages/admin/CategoryManagement/CategoryManagement";
 import ProductManagement from "~/pages/admin/ProductManagement/ProductManagement";
 import Dashboard from "~/pages/admin/dashboard/Dashboard";
 import OrderManagement from "~/pages/admin/OrderManagement/OrderManagement";
 import { MdOutlineLogout } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Index() {
 
@@ -26,6 +26,7 @@ function Index() {
     ];
     return (
         <>
+            <title>Admin Dashboard</title>
             <div className="flex bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
                 {/* Sidebar */}
                 <div className={`${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-white dark:bg-gray-800 min-h-screen shadow-lg`}>
@@ -47,6 +48,11 @@ function Index() {
                                 <span className={`ml-4 ${!sidebarOpen && 'hidden'}`}>{item.label}</span>
                             </button>
                         ))}
+                        <Link to="/"
+                            className="w-full flex items-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <span className="text-xl"><FiHome /></span>
+                            <span className="ml-4">Xem trang chủ</span>
+                        </Link>
                     </nav>
                     <nav>
                         <button
@@ -71,7 +77,7 @@ function Index() {
                     {activeSection === "products" && <ProductManagement />}
                     {activeSection === "orders" && <OrderManagement />}
                 </div>
-            </div>
+            </div >
         </>
     );
 };

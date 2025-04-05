@@ -21,6 +21,7 @@ function About() {
 
     return (
         <>
+            <title>Giới thiệu</title>
             {/* Hero Section */}
             <div className="relative h-screen">
                 <div className="absolute inset-0">

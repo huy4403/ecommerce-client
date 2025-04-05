@@ -76,8 +76,8 @@ function Products() {
     };
 
     return (
-
         <>
+            <title>Sản phẩm</title>
             <div className="flex-1 px-2 sm:px-4 pt-20 sm:pt-28.5 mx-2 sm:mx-4 md:mx-8 lg:mx-100">
                 <p className="mb-2 text-gray-700 font-bold text-sm sm:text-base">Khoảng giá:</p>
                 <Slider
