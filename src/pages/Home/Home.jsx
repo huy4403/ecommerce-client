@@ -9,7 +9,7 @@ import FreeShip from '~/assets/banner/free_ship.png';
 import { Toast } from '~/components/ui/Toast';
 import { getNewProduct, getFeaturedProduct } from '~/services/product/product-service';
 import { getAllCategory } from '~/services/category/category-service';
-import I from '~/assets/image.png';
+import I from '~/assets/intro/customer.png';
 
 const banners = [
     {
@@ -34,7 +34,6 @@ const banners = [
         link: '/products'
     }
 ];
-// https://randomuser.me/api/portraits/men/1.jpg
 const testimonials = [
     {
         id: 1,

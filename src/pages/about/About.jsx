@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiMail, FiPhone, FiMapPin, FiAward, FiShield, FiTruck } from 'react-icons/fi';
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Founder from '~/assets/intro/founder.png';
 
 function About() {
     const [isVisible, setIsVisible] = useState(false);
@@ -14,7 +15,7 @@ function About() {
         {
             name: "Đoàn Văn Huy",
             role: "CEO & Founder",
-            image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
+            image: Founder,
             bio: "Sinh viên trường đại học tài nguyên và Môi trường Hà Nội"
         }
     ];
@@ -97,7 +98,7 @@ function About() {
                     {/* Team Section */}
                     <section className=" mb-15 py-20 bg-gray-100 px-4 md:px-8 text-center">
                         <div className="max-w-6xl mx-auto">
-                            <h2 className="text-4xl font-bold mb-12 text-center">Thành viên sáng lập</h2>
+                            <h2 className="text-4xl font-bold mb-12 text-center">Nhà sáng lập</h2>
                             <div className="flex justify-center">
                                 {teamMembers.map((member, index) => (
                                     <motion.div
