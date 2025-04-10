@@ -13,6 +13,7 @@ function BusinessAnalytics() {
     const [orderStatus, setOrderStatus] = useState([]);
     const [products, setProducts] = useState([]);
     const [revenueData, setRevenueData] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: 'sales', direction: 'desc' });
 
     useEffect(() => {
         (async () => {
@@ -38,7 +39,8 @@ function BusinessAnalytics() {
 
         (async () => {
             const res = await getProductAnalytics(dateRange);
-            setProducts(res.data.data);
+            const sortedProducts = res.data.data.sort((a, b) => b.sales - a.sales);
+            setProducts(sortedProducts);
         })();
 
         (async () => {
@@ -114,6 +116,22 @@ function BusinessAnalytics() {
             </div>
         </div>
     );
+
+    const handleSort = (key) => {
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
+        }
+        setSortConfig({ key, direction });
+
+        const sortedProducts = [...products].sort((a, b) => {
+            if (direction === 'desc') {
+                return b[key] - a[key];
+            }
+            return a[key] - b[key];
+        });
+        setProducts(sortedProducts);
+    };
 
     return (
         <>
@@ -270,9 +288,24 @@ function BusinessAnalytics() {
                                 <thead>
                                     <tr className="text-left">
                                         <th className="pb-4">Sản phẩm</th>
-                                        <th className="pb-4">Đã bán</th>
-                                        <th className="pb-4">Doanh thu</th>
-                                        <th className="pb-4">Lợi nhuận</th>
+                                        <th
+                                            className="pb-4 cursor-pointer hover:text-blue-600"
+                                            onClick={() => handleSort('sales')}
+                                        >
+                                            Đã bán {sortConfig.key === 'sales' ? (sortConfig.direction === 'desc' ? '↓' : '↑') : ''}
+                                        </th>
+                                        <th
+                                            className="pb-4 cursor-pointer hover:text-blue-600"
+                                            onClick={() => handleSort('revenue')}
+                                        >
+                                            Doanh thu {sortConfig.key === 'revenue' ? (sortConfig.direction === 'desc' ? '↓' : '↑') : ''}
+                                        </th>
+                                        <th
+                                            className="pb-4 cursor-pointer hover:text-blue-600"
+                                            onClick={() => handleSort('profit')}
+                                        >
+                                            Lợi nhuận {sortConfig.key === 'profit' ? (sortConfig.direction === 'desc' ? '↓' : '↑') : ''}
+                                        </th>
                                         <th className="pb-4">Tồn kho</th>
                                     </tr>
                                 </thead>

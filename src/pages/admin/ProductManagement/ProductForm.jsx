@@ -76,15 +76,14 @@ function ProductForm() {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('categoryId', categoryId);
-        formData.append('importPrice', importPrice);
-        formData.append('price', price);
+        formData.append('importPrice', importPrice.replace(/\./g, '')); // Remove dots before sending
+        formData.append('price', price.replace(/\./g, '')); // Remove dots before sending
         formData.append('description', description);
         formData.append('brand', brand);
 
         images.forEach((image) => {
             formData.append('files', image);
         });
-
         try {
             const res = await createProduct(formData);
             Toast.success("Tạo sản phẩm thành công");
@@ -124,6 +123,21 @@ function ProductForm() {
                     setLoading(false);
                 }
             });
+    };
+
+    const formatNumber = (value) => {
+        if (!value) return value;
+        value = value.toString();
+        value = value.replace(/\./g, '');
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    const handlePriceChange = (e, field) => {
+        let value = e.target.value;
+        value = value.replace(/\./g, ''); // Remove existing dots
+        if (!isNaN(value)) {
+            setValue(field, formatNumber(value));
+        }
     };
 
     return (
@@ -203,9 +217,20 @@ function ProductForm() {
                                 focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
                                 >
                                     <option value="">Chọn danh mục</option>
-                                    {categories.map(category => (
-                                        <option key={category.id} value={category.id}>{category.name}</option>
-                                    ))}
+                                    {categories.map(category => {
+                                        const getLowestLevelCategories = (cat) => {
+                                            if (!cat.childrenCategories || cat.childrenCategories.length === 0) {
+                                                return [cat];
+                                            }
+                                            return cat.childrenCategories.flatMap(child => getLowestLevelCategories(child));
+                                        };
+
+                                        const lowestCategories = getLowestLevelCategories(category);
+
+                                        return lowestCategories.map(cat => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ));
+                                    })}
                                 </select>
                             </div>
 
@@ -215,16 +240,19 @@ function ProductForm() {
                                 </label>
                                 {errors.importPrice && <p className="mt-1 text-sm text-red-500">{errors.importPrice.message}</p>}
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="importPrice"
                                     {...register("importPrice", {
                                         required: "Giá nhập không được để trống",
-                                        min: {
-                                            value: 0,
-                                            message: "Giá nhập phải lớn hơn 0"
+                                        pattern: {
+                                            value: /^[0-9.]*$/,
+                                            message: "Giá nhập phải là số"
+                                        },
+                                        validate: {
+                                            positive: value => parseInt(value.replace(/\./g, '')) > 0 || "Giá nhập phải lớn hơn 0"
                                         }
                                     })}
-                                    step="0.01"
+                                    onChange={(e) => handlePriceChange(e, "importPrice")}
                                     className={`mt-1 block w-full rounded-md shadow-sm ${errors.importPrice ? 'border-red-500' : 'border-gray-300'}
                                 focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
                                     placeholder="Giá nhập sản phẩm"
@@ -237,22 +265,25 @@ function ProductForm() {
                                 </label>
                                 {errors.price && <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>}
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="price"
                                     {...register("price", {
                                         required: "Giá bán không được để trống",
-                                        min: {
-                                            value: 0,
-                                            message: "Giá bán phải lớn hơn 0"
+                                        pattern: {
+                                            value: /^[0-9.]*$/,
+                                            message: "Giá bán phải là số"
                                         },
-                                        validate: value =>
-                                            Number(value) > Number(importPrice) ||
-                                            "Giá bán phải lớn hơn giá nhập"
+                                        validate: {
+                                            positive: value => parseInt(value.replace(/\./g, '')) > 0 || "Giá bán phải lớn hơn 0",
+                                            greaterThanImport: value =>
+                                                parseInt(value.replace(/\./g, '')) > parseInt(importPrice.replace(/\./g, '')) ||
+                                                "Giá bán phải lớn hơn giá nhập"
+                                        }
                                     })}
-                                    step="0.01"
+                                    onChange={(e) => handlePriceChange(e, "price")}
                                     className={`mt-1 block w-full rounded-md shadow-sm ${errors.price ? 'border-red-500' : 'border-gray-300'}
                                 focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
-                                    placeholder="Giá bản sản phẩm"
+                                    placeholder="Giá bán sản phẩm"
                                 />
                             </div>
                         </div>

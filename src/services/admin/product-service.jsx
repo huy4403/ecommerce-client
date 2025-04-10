@@ -17,6 +17,13 @@ export const updateProduct = async (id, request) => {
     return response;
 }
 
+export const deleteProduct = async (id, request) => {
+    const response = await instance.delete(`admin/product/${id}/image`,
+        { params: { fileToRemove: request } }
+    );
+    return response;
+}
+
 export const activeProduct = async (id) => {
     const response = await instance.put(`admin/product/${id}/active`);
     return response;

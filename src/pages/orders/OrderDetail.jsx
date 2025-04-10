@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FormatCurrency from '~/components/utils/FormatCurrency';
-import { getOrderById } from '~/services/order/order-service';
+import { getOrderById, rePayment } from '~/services/order/order-service';
+import { Toast } from '~/components/ui/Toast'
 
 function OrderDetail() {
     const { id } = useParams();
@@ -75,6 +76,18 @@ function OrderDetail() {
         }
     };
 
+
+    const handleRePayment = async () => {
+        try {
+            const resp = await rePayment(id);
+            window.location.href = resp.data.data.paymentUrl;
+
+        } catch (err) {
+            console.log(err);
+            Toast.error("Không thể thanh toán lại");
+        }
+    }
+
     return (
         <>
             <title>Chi tiết đơn hàng</title>
@@ -98,9 +111,22 @@ function OrderDetail() {
                 <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <div className="flex justify-between items-center mb-6">
                         <h1 className="text-2xl font-bold">Đơn hàng #{order.id}</h1>
-                        <span className={`font-semibold ${getStatusColor(order.orderStatus)}`}>
-                            {translateStatus(order.orderStatus)}
-                        </span>
+                        <div>
+                            <span className={`font-semibold ${getStatusColor(order.orderStatus)}`}>
+                                {translateStatus(order.orderStatus)}
+                            </span>
+                            <span>&nbsp;</span>
+                            {(order.transactionStatus === 'FAILED' || order.transactionStatus === 'PENDING') && (
+                                <button
+                                    type='button'
+                                    className='inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg
+                                    hover:bg-blue-700 transition-colors duration-200 ease-in-out shadow-md hover:shadow-lg'
+                                    onClick={handleRePayment}
+                                >
+                                    {order.transactionStatus === 'FAILED' ? 'Thanh toán lại' : 'Thanh toán'}
+                                </button>
+                            )}
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -119,7 +145,8 @@ function OrderDetail() {
                                 <p>Ngày đặt: {order.orderDate}</p>
                                 <p>Phương thức thanh toán: {translatePaymentMethod(order.paymentMethod)}</p>
                                 <p>Ngày giao hàng dự kiến: {order.deliveryDate}</p>
-                                <p>Trạng thái thanh toán: {translatePaymentStatus(order.transactionStatus)}</p>
+                                <p>Trạng thái thanh toán: {translatePaymentStatus(order.transactionStatus)}
+                                </p>
                             </div>
                         </div>
                     </div>

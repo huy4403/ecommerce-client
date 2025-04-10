@@ -64,7 +64,9 @@ const FormCategory = () => {
     }
 
     const handleCreateCategory = async ({ name, parentId }) => {
-        await createCategory({ name, parentId });
+        const res = await createCategory({ name, parentId });
+        setAllCategories(preV => [...preV, { id: res.data.data.id, name, parentId }]);
+        console.log(res.data.data.id);
         Toast.success('Thêm danh mục thành công!');
         reset({ name: '', parentId: '' });
     }

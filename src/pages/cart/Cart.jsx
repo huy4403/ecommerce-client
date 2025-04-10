@@ -79,7 +79,6 @@ function Cart() {
             setCartItems(prevItems => prevItems.filter(item => item.id !== id));
             context.setCartCount(context.cartCount - 1);
         } catch (error) {
-            console.error("Failed to delete cart item:", error);
             Toast.error("Không thể xóa sản phẩm khỏi giỏ hàng");
         }
     };
@@ -176,20 +175,20 @@ function Cart() {
 
                                 <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                     <motion.button
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.9 }}
+                                        whileHover={item.quantityBuy <= 1 ? {} : { scale: 1.1 }}
+                                        whileTap={item.quantityBuy <= 1 ? {} : { scale: 0.9 }}
                                         onClick={() => handleQuantityChange(item.id, -1)}
-                                        className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+                                        className="p-2 rounded-full text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed enabled:hover:bg-gray-100 enabled:hover:text-gray-800 transition-colors"
                                         disabled={item.quantityBuy <= 1}
                                     >
                                         <FiMinus />
                                     </motion.button>
                                     <span className="w-8 text-center font-medium">{item.quantityBuy}</span>
                                     <motion.button
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.9 }}
+                                        whileHover={item.quantityBuy >= item.stock ? {} : { scale: 1.1 }}
+                                        whileTap={item.quantityBuy >= item.stock ? {} : { scale: 0.9 }}
                                         onClick={() => handleQuantityChange(item.id, 1)}
-                                        className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+                                        className="p-2 rounded-full text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed enabled:hover:bg-gray-100 enabled:hover:text-gray-800 transition-colors"
                                         disabled={item.quantityBuy >= item.stock}
                                     >
                                         <FiPlus />

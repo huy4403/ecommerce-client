@@ -237,7 +237,6 @@ function Header() {
                                     className="h-10 w-10 object-contain spin-animation"
                                 />
                             </Link>
-                            <Link to="/products" className="text-pink-500 font-medium uppercase text-sm md:text-lg">Sản phẩm</Link>
                             <CategoryMenu />
                             <Link to="/about" className="text-pink-500 font-medium md:text-lg text-sm uppercase">Về chúng tôi</Link>
                         </div>

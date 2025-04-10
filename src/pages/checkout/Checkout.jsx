@@ -40,12 +40,8 @@ function Checkout() {
 
     useEffect(() => {
         (async () => {
-            try {
-                const response = await getAllAddress();
-                setAddresses(response.data.data);
-            } catch (error) {
-                Toast.error("Vui lòng thêm địa chỉ nhận hàng");
-            }
+            const response = await getAllAddress();
+            setAddresses(response.data.data);
         })();
     }, []);
 

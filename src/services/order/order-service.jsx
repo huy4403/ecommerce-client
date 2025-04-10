@@ -15,5 +15,9 @@ export const getUserOrders = async () => {
     return response;
 }
 
+export const rePayment = async (id) => {
+    const response = await instance.post(`order/${id}`);
+    return response;
+}
 
 

@@ -17,11 +17,28 @@ function Orders() {
                 setOrders(sortedOrders);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching orders:', error);
                 setLoading(false);
             }
         })();
     }, []);
+
+    const getTransactionStatusColor = (status) => {
+        switch (status) {
+            case 'PENDING': return 'text-yellow-500';
+            case 'SUCCESS': return 'text-green-500';
+            case 'FAILED': return 'text-red-500';
+            default: return 'text-gray-500';
+        }
+    };
+
+    const translateTransactionStatus = (status) => {
+        switch (status) {
+            case 'PENDING': return 'Chờ thanh toán';
+            case 'SUCCESS': return 'Đã thanh toán';
+            case 'FAILED': return 'Thanh toán thất bại';
+            default: return status;
+        }
+    };
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -87,9 +104,15 @@ function Orders() {
                                 <Link to={`/order/${order.id}`}>
                                     <div className="flex justify-between items-center mb-4">
                                         <h2 className="text-lg font-semibold">Đơn hàng #{order.id}</h2>
-                                        <span className={`font-medium ${getStatusColor(order.orderStatus)}`}>
-                                            {translateStatus(order.orderStatus)}
-                                        </span>
+                                        <div>
+                                            <span className={`font-medium ${getStatusColor(order.orderStatus)}`}>
+                                                {translateStatus(order.orderStatus)}
+                                            </span>
+                                            <span> - </span>
+                                            <span className={`font-medium ${getTransactionStatusColor(order.transactionStatus)}`}>
+                                                {translateTransactionStatus(order.transactionStatus)}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div className="space-y-3">

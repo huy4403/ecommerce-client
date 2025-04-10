@@ -3,7 +3,7 @@ import { authDialog } from '~/components/ui/ConfirmationDialog';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080/api/v1/',
-    timeout: 8000,
+    timeout: 20000,
     headers: {
         // 'Content-Type': 'application/json',
         'X-Custom-Header': 'foobar'

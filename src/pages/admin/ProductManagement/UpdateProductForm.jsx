@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { getAllCategory } from "~/services/category/category-service";
-import { getProductById, updateProduct, activeProduct, inactiveProduct } from "~/services/admin/product-service";
+import { getProductById, updateProduct, activeProduct, inactiveProduct, deleteProduct } from "~/services/admin/product-service";
 import { useParams, useNavigate } from "react-router";
 import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
@@ -21,7 +21,6 @@ function UpdateProductForm() {
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
     const [attributes, setAttributes] = useState([]);
-    const [product, setProduct] = useState({});
     const [status, setStatus] = useState();
     const navigate = useNavigate();
     const {
@@ -30,6 +29,7 @@ function UpdateProductForm() {
         formState: { errors },
         watch,
         reset,
+        setValue,
     } = useForm({
         mode: 'onChange'
     });
@@ -40,7 +40,6 @@ function UpdateProductForm() {
                 const response = await getAllCategory();
                 setCategories(response.data.data);
                 const res = await getProductById(id);
-                setProduct(res.data.data);
                 setImages(res.data.data.images);
                 setStatus(res.data.data.status);
 
@@ -48,8 +47,8 @@ function UpdateProductForm() {
                     title: res.data.data.title,
                     categoryId: res.data.data.categoryId,
                     brand: res.data.data.brand || "",
-                    importPrice: res.data.data.importPrice,
-                    price: res.data.data.price,
+                    importPrice: new Intl.NumberFormat('vi-VN').format(res.data.data.importPrice),
+                    price: new Intl.NumberFormat('vi-VN').format(res.data.data.price),
                     description: res.data.data.description
                 });
             } catch (err) {
@@ -60,6 +59,21 @@ function UpdateProductForm() {
     }, [id, reset]);
 
     const importPrice = watch("importPrice");
+    const price = watch("price");
+
+    const formatNumberInput = (value, field) => {
+        // Remove any non-digit characters
+        const numericValue = value.replace(/\D/g, '');
+
+        // Format with thousand separators
+        const formattedValue = new Intl.NumberFormat('vi-VN').format(numericValue);
+
+        // Update form value
+        setValue(field, formattedValue);
+
+        // Return numeric value for validation
+        return numericValue;
+    };
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         if (rejectedFiles && rejectedFiles.length > 0) {
@@ -101,8 +115,8 @@ function UpdateProductForm() {
         formData.append('title', title);
         formData.append('categoryId', categoryId);
         formData.append('brand', brand);
-        formData.append('importPrice', importPrice);
-        formData.append('price', price);
+        formData.append('importPrice', importPrice.replace(/\D/g, '')); // Remove formatting before sending
+        formData.append('price', price.replace(/\D/g, '')); // Remove formatting before sending
         formData.append('description', description);
 
         // Only append new images to the formData
@@ -154,14 +168,37 @@ function UpdateProductForm() {
             });
     }
 
-    const removeImage = (index) => {
+    const removeImg = async (fileToRemove) => {
+        try {
+            const res = await deleteProduct(id, fileToRemove);
+            console.log(res);
+            Toast.success("Đã xóa thành công hình ảnh khỏi sản phẩm");
+        } catch (err) {
+            console.log(err);
+            Toast.error(err.response.data.error !== "Json not format"
+                ? err.response.data.error
+                : "Đã xảy ra lỗi trong quá trình upload hình ảnh");
+        }
+    }
+
+    const removeImage = (index, file) => {
         // Check if the removed image is a new image
         if (index >= images.length - newImages.length) {
             // It's a new image
             const newImageIndex = index - (images.length - newImages.length);
             setNewImages(prev => prev.filter((_, i) => i !== newImageIndex));
+            setImages(prev => prev.filter((_, i) => i !== index));
+        } else {
+            images.length <= 1
+                ? Toast.error("Không thể xóa hình ảnh duy nhất của sản phẩm")
+                : ConfirmationDialog("Bạn có thật sự muốn xóa hình ảnh này không?")
+                    .then(async (result) => {
+                        if (result) {
+                            await removeImg(file);
+                            setImages(prev => prev.filter((_, i) => i !== index));
+                        }
+                    });
         }
-        setImages(prev => prev.filter((_, i) => i !== index));
     };
 
     const onSubmit = async (data) => {
@@ -286,9 +323,20 @@ function UpdateProductForm() {
                                     focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
                                 >
                                     <option value="">Chọn danh mục</option>
-                                    {categories.map(category => (
-                                        <option key={category.id} value={category.id}>{category.name}</option>
-                                    ))}
+                                    {categories.map(category => {
+                                        const getLowestLevelCategories = (cat) => {
+                                            if (!cat.childrenCategories || cat.childrenCategories.length === 0) {
+                                                return [cat];
+                                            }
+                                            return cat.childrenCategories.flatMap(child => getLowestLevelCategories(child));
+                                        };
+
+                                        const lowestCategories = getLowestLevelCategories(category);
+
+                                        return lowestCategories.map(cat => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ));
+                                    })}
                                 </select>
                             </div>
 
@@ -298,16 +346,15 @@ function UpdateProductForm() {
                                 </label>
                                 {errors.importPrice && <p className="mt-1 text-sm text-red-500">{errors.importPrice.message}</p>}
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="importPrice"
                                     {...register("importPrice", {
                                         required: "Giá nhập không được để trống",
-                                        min: {
-                                            value: 0,
-                                            message: "Giá nhập phải lớn hơn 0"
+                                        onChange: (e) => formatNumberInput(e.target.value, "importPrice"),
+                                        validate: {
+                                            positive: value => parseInt(value.replace(/\D/g, '')) > 0 || "Giá nhập phải lớn hơn 0"
                                         }
                                     })}
-                                    step="0.01"
                                     className={`mt-1 block w-full rounded-md shadow-sm ${errors.importPrice ? 'border-red-500' : 'border-gray-300'}
                                 focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
                                     placeholder="Giá nhập sản phẩm"
@@ -320,22 +367,21 @@ function UpdateProductForm() {
                                 </label>
                                 {errors.price && <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>}
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="price"
                                     {...register("price", {
                                         required: "Giá bán không được để trống",
-                                        min: {
-                                            value: 0,
-                                            message: "Giá bán phải lớn hơn 0"
-                                        },
-                                        validate: value =>
-                                            Number(value) > Number(importPrice) ||
-                                            "Giá bán phải lớn hơn giá nhập"
+                                        onChange: (e) => formatNumberInput(e.target.value, "price"),
+                                        validate: {
+                                            positive: value => parseInt(value.replace(/\D/g, '')) > 0 || "Giá bán phải lớn hơn 0",
+                                            greaterThanImport: value =>
+                                                parseInt(value.replace(/\D/g, '')) > parseInt(importPrice?.replace(/\D/g, '') || 0) ||
+                                                "Giá bán phải lớn hơn giá nhập"
+                                        }
                                     })}
-                                    step="0.01"
                                     className={`mt-1 block w-full rounded-md shadow-sm ${errors.price ? 'border-red-500' : 'border-gray-300'}
                                 focus:ring-indigo-500 focus:border-indigo-500 px-2 py-2`}
-                                    placeholder="Giá bản sản phẩm"
+                                    placeholder="Giá bán sản phẩm"
                                 />
                             </div>
                         </div>
@@ -386,8 +432,9 @@ function UpdateProductForm() {
                                             </div>
                                             <button
                                                 type="button"
-                                                onClick={() => removeImage(index)}
-                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow-md transition-all duration-200 transform hover:scale-110"
+                                                onClick={() => removeImage(index, file)}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 
+                                                hover:bg-red-600 shadow-md transition-all duration-200 transform hover:scale-110"
                                                 title="Xóa hình ảnh"
                                             >
                                                 <FiX size={16} />
