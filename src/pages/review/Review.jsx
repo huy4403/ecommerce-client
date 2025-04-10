@@ -123,6 +123,19 @@ function Review({ id, bought }) {
                                         ))}
                                     </div>
                                 )}
+                                {review.reply
+                                    ? (
+                                        <div className="mt-3 pl-4 border-l-2 border-gray-300">
+                                            <div className="flex items-center">
+                                                <span className="font-medium text-blue-600">Đoàn Huy Ecommerce</span>
+                                                <span className="ml-2 text-gray-500 text-sm">{review.reply.replyDate}</span>
+                                            </div>
+                                            <p className="text-gray-700 mt-1">{review.reply.content}</p>
+                                        </div>
+                                    ) : (
+                                        <div className="mt-3 pl-4 text-gray-500 italic">Chưa có phản hồi từ quản trị viên</div>
+                                    )
+                                }
                             </div>
                         ))
                     ) : (

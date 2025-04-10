@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { FiUsers, FiBox, FiShoppingBag, FiPieChart, FiGrid, FiMenu, FiX, FiHome } from "react-icons/fi";
+import { FiUsers, FiBox, FiShoppingBag, FiPieChart, FiGrid, FiMenu, FiX, FiHome, FiMessageSquare } from "react-icons/fi";
 import UserManagement from "~/pages/admin/UserManagement/UserManagement";
 import CategoryManagement from "~/pages/admin/CategoryManagement/CategoryManagement";
 import ProductManagement from "~/pages/admin/ProductManagement/ProductManagement";
 import Dashboard from "~/pages/admin/dashboard/Dashboard";
 import OrderManagement from "~/pages/admin/OrderManagement/OrderManagement";
+import ReviewManagement from "~/pages/admin/ReviewManagement/ReviewManagement"
 import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -23,6 +24,7 @@ function Index() {
         { id: "categories", label: "Quản lý danh mục", icon: <FiGrid /> },
         { id: "products", label: "Quản lý sản phẩm", icon: <FiBox /> },
         { id: "orders", label: "Quản lý đơn hàng", icon: <FiShoppingBag /> },
+        { id: "reviews", label: "Quản lý đánh giá", icon: <FiMessageSquare /> },
     ];
     return (
         <>
@@ -76,6 +78,7 @@ function Index() {
                     {activeSection === "categories" && <CategoryManagement />}
                     {activeSection === "products" && <ProductManagement />}
                     {activeSection === "orders" && <OrderManagement />}
+                    {activeSection === "reviews" && <ReviewManagement />}
                 </div>
             </div >
         </>
