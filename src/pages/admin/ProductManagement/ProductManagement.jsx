@@ -4,7 +4,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import debounce from "lodash/debounce";
 import { productManagementService, inactiveProduct, activeProduct } from "~/services/admin/product-service";
-import { getAllCategoryAdmin } from "~/services/category/category-service";
+import { getAllCategory } from "~/services/category/category-service";
 import { Toast } from "~/components/ui/Toast";
 import { Link } from "react-router-dom";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
@@ -33,8 +33,9 @@ const ProductManagement = () => {
 
                 if (firstLoad) {
                     // Fetch categories from API
-                    const categoryRes = await getAllCategoryAdmin();
+                    const categoryRes = await getAllCategory();
                     const categoriesFromApi = categoryRes.data.data;
+                    console.log(categoryRes);
                     setCategories([{ id: 0, name: "Tất cả" }, ...categoriesFromApi]);
                     setFirstLoad(false);
                 }
@@ -222,11 +223,20 @@ const ProductManagement = () => {
                             className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer"
                             onChange={(e) => handleSelectCategory(e.target.value)}
                         >
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.name}>
-                                    {category.name}
-                                </option>
-                            ))}
+                            {categories.map(category => {
+                                const getLowestLevelCategories = (cat) => {
+                                    if (!cat.childrenCategories || cat.childrenCategories.length === 0) {
+                                        return [cat];
+                                    }
+                                    return cat.childrenCategories.flatMap(child => getLowestLevelCategories(child));
+                                };
+
+                                const lowestCategories = getLowestLevelCategories(category);
+
+                                return lowestCategories.map(cat => (
+                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                                ));
+                            })}
                         </select>
 
                         <div className="flex-1 px-4">

@@ -176,7 +176,7 @@ function Header() {
                                 to={category.childrenCategories && category.childrenCategories.length > 0
                                     ? "#"
                                     : `/products`}
-                                className={`flex items-center justify-between px-4 py-2 hover:bg-pink-50 rounded-md w-full
+                                className={`flex items-center justify-between px-4 py-2 font-semibold hover:bg-pink-50 rounded-md w-full
                                     ${thisPath.pathname === '/products' && context.categorySelected === category.name
                                         ? "bg-pink-200 text-pink-700 font-semibold"
                                         : "text-gray-700"

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaStar, FaEdit, FaTrash, FaImage, FaSearch, FaFileExport, FaCheck } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaStar, FaCheck } from "react-icons/fa";
 import { getAllReview, changeReviewStatus, addReply } from "~/services/admin/review-service"
 import { Toast } from "~/components/ui/toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
@@ -62,20 +62,17 @@ function ReviewManagement() {
             const request = { content };
             const response = await addReply(id, request);
 
-            if (response.status === 200) {
-                Toast.success("Phản hồi đã được gửi thành công");
+            Toast.success("Phản hồi đã được gửi thành công");
 
-                // Update the local state with the new reply
-                setReviews(reviews.map(review =>
-                    review.id === id ? {
-                        ...review,
-                        reply: {
-                            content: content,
-                            replyDate: new Date().toLocaleString()
-                        }
-                    } : review
-                ));
-            }
+            setReviews(reviews.map(review =>
+                review.id === id ? {
+                    ...review,
+                    reply: {
+                        content: content,
+                        replyDate: new Date().toLocaleString()
+                    }
+                } : review
+            ));
         } catch (err) {
             console.log(err);
             Toast.error("Đã xảy ra lỗi khi gửi phản hồi");

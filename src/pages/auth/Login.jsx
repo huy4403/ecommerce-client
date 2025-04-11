@@ -1,4 +1,4 @@
-import { loginWithPassword } from '~/services/auth/login-service'
+import { loginWithPassword, sendOtp, loginWithOtp } from '~/services/auth/login-service'
 import { useForm } from "react-hook-form"
 import { useEffect, useState, useContext } from 'react'
 import { useNavigate, Link } from "react-router-dom";
@@ -12,50 +12,92 @@ import Logo from "~/assets/img/react.svg";
 const Login = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false);
-
+    const [typeLogin, setTypeLogin] = useState('password');
     const context = useContext(Context);
+    const [countdown, setCountdown] = useState(0);
+    const [loadingSendOtp, setLoadingSendOtp] = useState(false);
 
     useEffect(() => {
         localStorage.clear();
     }, []);
 
+    useEffect(() => {
+        let timer;
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown(prev => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [countdown]);
+
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm()
 
+    const handleSetTypeLogin = () => {
+        setTypeLogin(prev => prev === 'password' ? 'otp' : 'password');
+    }
+
+    const handleSendOtp = async () => {
+        const email = watch("email");
+        if (!email) {
+            Toast.error("Vui lòng nhập email");
+            return;
+        }
+
+        try {
+            setLoadingSendOtp(true);
+            await sendOtp({ email });
+
+            setCountdown(60);
+            Toast.success("Đã gửi mã OTP thành công");
+        } catch (err) {
+            console.log(err);
+            Toast.error("Email không tồn tại!");
+        } finally {
+            setLoadingSendOtp(false);
+        }
+    }
+
     const onSubmit = async (data) => {
         setIsLoading(true)
-        const { email, password } = data;
-        await loginWithPassword({ email, password })
-            .then(res => {
-                localStorage.setItem('token', res.data.data.token)
-                localStorage.setItem('avatar', res.data.data.avatar)
-                localStorage.setItem('fullname', res.data.data.fullName)
-                localStorage.setItem('role', res.data.data.role)
+        const { email, password, otp } = data;
+        try {
+            let res;
+            if (typeLogin === 'password') {
+                res = await loginWithPassword({ email, password });
+            } else {
+                res = await loginWithOtp({ email, otp });
+            }
 
-                if (res.data.data.role === "ADMIN") {
-                    navigate('/admin')
-                    context.setIsLogin(true);
-                } else if (res.data.data.role === "USER") {
-                    navigate('/')
-                    context.setIsLogin(true);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                if (err.response.data.error == "Bad Credentials!") {
-                    Toast.error('Tài khoản hoặc mật khẩu không chính xác!')
-                } else {
-                    if (err.response.data.error == "Your account is banned!") {
-                        Toast.error('Tài khoản của bạn đã bị vô hiệu hóa!')
-                    }
-                }
-            })
-            .finally(() => {
-                setIsLoading(false)
-            });
+            localStorage.setItem('token', res.data.data.token)
+            localStorage.setItem('avatar', res.data.data.avatar)
+            localStorage.setItem('fullname', res.data.data.fullName)
+            localStorage.setItem('role', res.data.data.role)
+
+            if (res.data.data.role === "ADMIN") {
+                navigate('/admin')
+                context.setIsLogin(true);
+            } else if (res.data.data.role === "USER") {
+                navigate('/')
+                context.setIsLogin(true);
+            }
+        } catch (err) {
+            console.log(err);
+            if (err.response.data.error === "Bad Credentials!") {
+                Toast.error('Tài khoản hoặc mật khẩu không chính xác!');
+            } else if (err.response.data.error === 'OTP is incorrect or does not exist') {
+                Toast.error('Mã OTP không chính xác!');
+            } else if (err.response.data.error === "Your account is banned!") {
+                Toast.error('Tài khoản của bạn đã bị vô hiệu hóa!')
+            }
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -98,32 +140,79 @@ const Login = () => {
                                         focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     />
                                 </div>
+                                {typeLogin === 'otp' && (
+                                    <button
+                                        type="button"
+                                        onClick={handleSendOtp}
+                                        disabled={countdown > 0 || isLoading}
+                                        className={`text-sm mt-2 font-semibold float-end
+                                            ${countdown > 0 ? 'text-gray-400 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-500'}`}
+                                    >
+                                        {loadingSendOtp ? 'Đang gửi...' : (countdown > 0 ? `Gửi lại sau ${countdown}s` : 'Gửi OTP')}
+                                    </button>
+                                )}
                             </div>
 
-                            <div>
-                                <div className="flex items-center justify-between">
-                                    <label htmlFor="password" className="flex text-sm/6 font-medium text-gray-900">
-                                        <RiLockPasswordLine size={20} />&nbsp;Mật khẩu
-                                    </label>
+                            {typeLogin === 'password'
+                                ? (
+                                    <div>
+                                        <div className="flex items-center justify-between">
+                                            <label htmlFor="password" className="flex text-sm/6 font-medium text-gray-900">
+                                                <RiLockPasswordLine size={20} />&nbsp;Mật khẩu
+                                            </label>
 
-                                </div>
-                                {errors.password && <span className='text-red-500 text-sm'>Vui lòng nhập mật khẩu</span>}
-                                <div className="mt-2">
-                                    <input
-                                        id="password"
-                                        type="password"
-                                        placeholder='Mật khẩu'
-                                        {...register("password", { required: true })}
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900
+                                        </div>
+                                        {errors.password && <span className='text-red-500 text-sm'>Vui lòng nhập mật khẩu</span>}
+                                        <div className="mt-2">
+                                            <input
+                                                id="password"
+                                                type="password"
+                                                placeholder='Mật khẩu'
+                                                {...register("password", { required: true })}
+                                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900
                                         outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2
                                         focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <div className="flex items-center justify-between">
+                                            <label htmlFor="otp" className="flex text-sm/6 font-medium text-gray-900">
+                                                Mã xác thực OTP
+                                            </label>
+
+                                        </div>
+                                        {errors.otp && <span className='text-red-500 text-sm'>Vui lòng nhập OTP</span>}
+                                        <div className="mt-2">
+                                            <input
+                                                id="otp"
+                                                type="text"
+                                                placeholder='Mã OTP'
+                                                {...register("otp", { required: true })}
+                                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900
+                                        outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2
+                                        focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+                            <div className="flex justify-between">
+                                <div className="text-sm justify-start">
+                                    <button className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                        type='button'
+                                        onClick={handleSetTypeLogin}
+                                    >
+                                        {typeLogin === 'password' ? 'Đăng nhập với OTP' : 'Đăng nhập với mật khẩu'}
+                                    </button>
                                 </div>
-                            </div>
-                            <div className="text-sm float-end">
-                                <Link to='/forgot' className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                    Quên mật khẩu?
-                                </Link>
+                                <div className="text-sm justify-end">
+                                    <Link to='/forgot' className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                        Quên mật khẩu?
+                                    </Link>
+                                </div>
                             </div>
 
                             <div>
