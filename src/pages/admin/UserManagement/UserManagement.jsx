@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllUser, lockAccount, unlockAccount } from "~/services/admin/user-service";
 import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
+import defaultAvatar from "~/assets/img/default_avatar.png";
 
 function UserManagement() {
 
@@ -103,7 +104,7 @@ function UserManagement() {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <img
                                             alt="Avatar"
-                                            src={user.avatar}
+                                            src={user.avatar || defaultAvatar}
                                             className="inline-block size-8 rounded-full ring-2 ring-white"
                                         />
                                     </td>

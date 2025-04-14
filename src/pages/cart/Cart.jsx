@@ -2,9 +2,9 @@ import { useState, useEffect, useContext } from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { getUserCart, deleteCartItem, updateCartItemQuantity } from "~/services/cart/cart-service";
-import FormatCurrency from "~/components/utils/formatCurrency";
+import FormatCurrency from "~/components/utils/FormatCurrency";
 import { Link } from "react-router-dom";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import { Context } from "~/ContextProvider";
 
 function Cart() {

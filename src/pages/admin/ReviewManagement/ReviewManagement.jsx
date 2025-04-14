@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar, FaCheck } from "react-icons/fa";
 import { getAllReview, changeReviewStatus, addReply } from "~/services/admin/review-service"
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";

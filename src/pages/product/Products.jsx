@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "~/ContextProvider";
 import { FetchProducts } from "~/services/product/product-service";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import { Link } from "react-router-dom";
 import FormatCurrency from "~/components/utils/FormatCurrency";
 import Slider from "rc-slider";

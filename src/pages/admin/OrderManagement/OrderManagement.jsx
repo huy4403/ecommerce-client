@@ -1,6 +1,6 @@
 import { getAllOrders, updateOrderStatus, updateTransactionStatus } from "~/services/admin/order-service";
 import { useEffect, useState } from "react";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
 import FormatCurrency from "~/components/utils/FormatCurrency";
 import { Link } from "react-router-dom";

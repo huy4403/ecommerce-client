@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import { FiPlus, FiX } from "react-icons/fi";
 import { addVariant, getVariants, updateQuantityVariant, deleteVariant, activeVariant } from "~/services/admin/product-service";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";

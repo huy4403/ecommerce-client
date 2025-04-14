@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 
 function AttributeManagement({ id, attributes, setAttributes }) {
 

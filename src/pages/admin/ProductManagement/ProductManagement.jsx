@@ -8,7 +8,7 @@ import { getAllCategory } from "~/services/category/category-service";
 import { Toast } from "~/components/ui/Toast";
 import { Link } from "react-router-dom";
 import ConfirmationDialog from "~/components/ui/ConfirmationDialog";
-import FormatCurrency from "~/components/utils/formatCurrency";
+import FormatCurrency from "~/components/utils/FormatCurrency";
 
 const ProductManagement = () => {
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getReview, createReview } from "~/services/review/review-service";
 import { FaStar } from "react-icons/fa";
-import { Toast } from "~/components/ui/toast";
+import { Toast } from "~/components/ui/Toast";
 import { useForm } from "react-hook-form";
 
 function Review({ id, bought }) {

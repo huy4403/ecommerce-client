@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiMail, FiPhone, FiMapPin, FiAward, FiShield, FiTruck } from 'react-icons/fi';
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
+import SuMenh from '~/assets/intro/sumenh.png';
 import Founder from '~/assets/intro/founder.png';
 
 function About() {
@@ -54,9 +55,9 @@ function About() {
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 0.4 }}
-                        className="text-xl text-center max-w-2xl"
+                        className="text-xl text-center max-w-xl"
                     >
-                        Transforming online shopping with quality, convenience, and exceptional service
+                        Chuyển đổi mua sắm trực tuyến với chất lượng, sự tiện lợi và dịch vụ đặc biệt
                     </motion.p>
                 </div>
             </div>
@@ -128,7 +129,10 @@ function About() {
                     <div className="bg-white rounded-2xl shadow-xl p-10 mb-12 transform hover:scale-[1.02] transition-all duration-300 border border-gray-100">
                         <div className="flex flex-col md:flex-row gap-12 items-center">
                             <div className="md:w-1/2">
-                                <h2 className="text-3xl font-bold mb-8 text-gray-800 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Sứ mệnh</h2>
+                                <h2 className="text-3xl font-bold mb-8 text-gray-800 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"
+                                >
+                                    Sứ mệnh
+                                </h2>
                                 <ul className="grid grid-cols-1 gap-6">
                                     <li className="flex items-center space-x-4 text-gray-700 group">
                                         <span className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full group-hover:scale-125 transition-transform duration-300"></span>
@@ -150,7 +154,7 @@ function About() {
                             </div>
                             <div className="md:w-1/2">
                                 <img
-                                    src="/images/mission.jpg"
+                                    src={SuMenh}
                                     alt="Sứ mệnh của chúng tôi"
                                     className="rounded-xl shadow-lg w-full h-auto object-cover hover:shadow-2xl transition-shadow duration-300"
                                 />

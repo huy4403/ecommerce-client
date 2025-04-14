@@ -18,8 +18,11 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
+    port: 5500,
     allowedHosts: [
       'healthy-hen-crack.ngrok-free.app',
+      'web.huydoan.store',
     ],
   },
 })
